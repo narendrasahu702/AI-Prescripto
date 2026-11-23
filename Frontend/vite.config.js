@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: 'https://ai-prescripto.onrender.com/',
+  base: '/',
   server: {
     port: 5173,
   },
