@@ -1,0 +1,7 @@
+import mongoose from 'mongoose';
+const userSchema=new mongoose.Schema({name:{type:String,required:true,trim:true},username:{type:String,required:true,unique:true,lowercase:true,trim:true},email:{type:String,lowercase:true,trim:true,unique:true,sparse:true},passwordHash:{type:String,required:true},role:{type:String,enum:['doctor','patient','pharmacist','admin'],required:true},phone:String,specialization:String,pharmacyName:String,age:Number,gender:String,isActive:{type:Boolean,default:true}}, {timestamps:true});
+export const User=mongoose.model('User',userSchema);
+const itemSchema=new mongoose.Schema({rawText:String,drugName:String,dosage:String,frequency:String,duration:String,confidence:{type:Number,default:0}});
+const prescriptionSchema=new mongoose.Schema({code:{type:String,unique:true,index:true},doctor:{type:mongoose.Schema.Types.ObjectId,ref:'User',required:true},patient:{type:mongoose.Schema.Types.ObjectId,ref:'User',required:true},imagePath:String,rawText:String,items:[itemSchema],finalText:String,status:{type:String,enum:['pending_review','verified','dispensed'],default:'pending_review'},verifiedAt:Date,dispensedAt:Date},{timestamps:true});
+export const Prescription=mongoose.model('Prescription',prescriptionSchema);
+export const AuditLog=mongoose.model('AuditLog',new mongoose.Schema({actor:{type:mongoose.Schema.Types.ObjectId,ref:'User'},action:String,details:String},{timestamps:true}));
